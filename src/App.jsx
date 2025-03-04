@@ -15,11 +15,33 @@ function App() {
           </div>
         </nav>
 
+
+        <div className="second-container">
+
+          <div className="task-boxes">
+            <div className="box-title" id="box-title1">Backlog</div>
+            <div className="box-items"></div>
+          </div>
+
+          <div className="task-boxes">
+            <div className="box-title" id="box-title2">In Progress</div>
+            <div className="box-items"></div>
+          </div>
+
+          <div className="task-boxes">
+            <div className="box-title" id="box-title3">Review</div>
+            <div className="box-items"></div>
+          </div>
+
+          <div className="task-boxes">
+            <div className="box-title" id="box-title4">Complete</div>
+            <div className="box-items"></div>
+          </div>
+
+        </div>
+
         
-        <div className="task-containers"></div>
-        <div className="task-containers"></div>
-        <div className="task-containers"></div>
-        <div className="task-containers"></div>
+     
       </div>
     </>
   )
