@@ -1,42 +1,57 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+*{
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.navbar{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px;
+  background-color: cornflowerblue;
+  height: 50px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.input{
+  padding: 4px;
+  font-size: 15px;
+  /* background-color: antiquewhite; */
+  /* border-radius: 5px; */
+  
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+#input1{
+  width: 400px
 }
 
-.card {
-  padding: 2em;
+#input2{
+  width: 400px
 }
 
-.read-the-docs {
-  color: #888;
+#input3{
+  width: 300px
 }
+
+.nav-box{
+  width: 50vw;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+}
+
+.nav-button{
+  width: 80px;
+  background-color: yellow;
+  padding: 5px;
+  font-size: medium;
+  font-weight: 300;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.task-container{
+  
+}
+
