@@ -1,10 +1,14 @@
-
+import Form from './Components/TaskForm'
 import './App.css'
+import { useState } from 'react';
 
 function App() {
+  const [data,setData] = useState([]);
   
   return (
     <>
+      
+
       <div className="container">
         <nav className="navbar">
           <input type="text" id='input1' className='input' placeholder='Search here for a task...'/>
@@ -15,6 +19,7 @@ function App() {
           </div>
         </nav>
 
+        <Form/>
 
         <div className="second-container">
 
@@ -40,9 +45,9 @@ function App() {
 
         </div>
 
-        
-     
       </div>
+
+      
     </>
   )
 }
