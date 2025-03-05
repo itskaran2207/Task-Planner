@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { TextField, Select, MenuItem, Button, FormControl, InputLabel, TextareaAutosize, Box } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 
-const TaskForm = () => {
+const TaskForm = ({showForm, setShowForm, data, setData}) => {
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,12 +18,24 @@ const TaskForm = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(formData);
-    
+    setData([...data, formData]);
+    setShowForm(false);
+    setFormData({
+      title: "",
+      description: "",
+      priority: "",
+      assignee: "",
+      status: ""
+    })
   };
 
+  const handleCloseForm = ()=>{
+    setShowForm(false);
+  }
+
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", padding:5 , gap: 2, minWidth: "800px", borderRadius: 3, justifyContent: "center", alignItems: "center", zIndex: 200, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", border: "1px solid black", visibility: "hidden"}}>
-      <CloseIcon sx={{position: "absolute", top: "2px", right: "2px"}}/>
+    <Box component="form" onSubmit={handleSubmit} sx={{ display: "flex", flexDirection: "column", padding:5 , gap: 2, minWidth: "800px", borderRadius: 3, justifyContent: "center", alignItems: "center", zIndex: 200, position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", border: "1px solid black", visibility: `${showForm} ? "visible" : "hidden"`, backgroundColor:'#fff',}}>
+      <CloseIcon onClick={handleCloseForm} sx={{position: "absolute", top: "2px", right: "2px"}}/>
       <TextField label="Task Title" name="title" value={formData.title} onChange={handleChange} fullWidth required />
       
       <TextareaAutosize
@@ -51,7 +63,7 @@ const TaskForm = () => {
           <MenuItem value="Vikash Dwevedi">Vikash Dwevedi</MenuItem>
           <MenuItem value="Sanskriti Saluja">Sanskriti Saluja</MenuItem>
           <MenuItem value="Abhishek Sharma">Abhishek Sharma</MenuItem>
-          <MenuItem value="Lawanya Dhamija">Lawanya</MenuItem>
+          <MenuItem value="Lawanya Dhamija">Lawanya Dhamija</MenuItem>
           <MenuItem value="Jitendra Sarswat">Jitendra Sarswat</MenuItem>
           <MenuItem value="Bhaskar Nag">Bhaskar Nag</MenuItem>
         </Select>
