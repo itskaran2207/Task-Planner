@@ -3,17 +3,38 @@ import SearchIcon from "@mui/icons-material/Search";
 import "./App.css";
 import { useState } from "react";
 import ItemCard from "./Components/ItemCard";
+import Button from '@mui/material/Button';
+
 function App() {
   const [data, setData] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [search,setSearch] = useState({
-    searchByTask: '',
-    searchByAssignee: '',
-    searchByPriority: ''
+  const [editTask, setEditTask] = useState(null);
+  const [search, setSearch] = useState({
+    searchByTask: "",
+    searchByAssignee: "",
+    searchByPriority: "",
   });
 
   const handleButtonClick = () => {
+    setEditTask(null); 
     setShowForm(true);
+  };
+
+  const handleSearchInput = (e) => {
+    setSearch({
+      ...search,
+      [e.target.name]: e.target.value.toLowerCase(),
+    });
+  };
+
+  const filteredData = (status) => {
+    return data.filter(
+      (item) =>
+        item.status === status &&
+        item.title.toLowerCase().includes(search.searchByTask) &&
+        item.assignee.toLowerCase().includes(search.searchByAssignee) &&
+        item.priority.toLowerCase().includes(search.searchByPriority)
+    );
   };
 
   return (
@@ -29,33 +50,39 @@ function App() {
               borderRadius: "3px",
             }}
           >
-            <SearchIcon
-              sx={{ backgroundColor: "white", fontSize: "1.15rem" }}
-            />
+            <SearchIcon sx={{ backgroundColor: "white", fontSize: "1.15rem" }} />
             <input
               type="text"
-              id="input1"
+              name="searchByTask"
               className="input"
+              id="input1"
               placeholder="Search here for a task..."
+              value={search.searchByTask}
+              onChange={handleSearchInput}
             />
           </div>
-
           <div className="nav-box">
             <input
               type="text"
-              id="input2"
+              name="searchByAssignee"
               className="input"
+              id="input2"
               placeholder="Filter by Assignee"
+              value={search.searchByAssignee}
+              onChange={handleSearchInput}
             />
             <input
               type="text"
-              id="input3"
+              name="searchByPriority"
               className="input"
+              id="input3"
               placeholder="Filter by Priority"
+              value={search.searchByPriority}
+              onChange={handleSearchInput}
             />
-            <button className="nav-button" onClick={handleButtonClick}>
+            <Button variant="contained" sx={{ backgroundColor: "yellow", color: "black", "&:hover": { backgroundColor: "gold" } , fontSize: '2.15 rem', fontWeight: '500'}} color="yellow" onClick={handleButtonClick}>
               Add Task
-            </button>
+            </Button>
           </div>
         </nav>
 
@@ -65,61 +92,24 @@ function App() {
             setShowForm={setShowForm}
             data={data}
             setData={setData}
+            editTask={editTask}
+            setEditTask={setEditTask}
           />
         )}
 
         <div className="second-container">
-          <div className="task-boxes">
-            <div className="box-title" id="box-title1">
-              Backlog
+          {["backlog", "in progress", "review", "complete"].map((status, index) => (
+            <div className="task-boxes" key={status}>
+              <div className="box-title" id={`box-title${index + 1}`}>
+                {status.charAt(0).toUpperCase() + status.slice(1)}
+              </div>
+              <div className="box-items">
+                {filteredData(status).map((item) => (
+                  <ItemCard key={item.title} item={item} setEditTask={setEditTask} setShowForm={setShowForm} />
+                ))}
+              </div>
             </div>
-            <div className="box-items">
-              {data
-                .filter((item) => item.status === "BackLog")
-                .map((item) => {
-                  return <ItemCard key={item.title} item={item} />;
-                })}
-            </div>
-          </div>
-
-          <div className="task-boxes">
-            <div className="box-title" id="box-title2">
-              In Progress
-            </div>
-            <div className="box-items">
-              {data
-                .filter((item) => item.status === "In Progress")
-                .map((item) => {
-                  return <ItemCard key={item.title} item={item} />;
-                })}
-            </div>
-          </div>
-
-          <div className="task-boxes">
-            <div className="box-title" id="box-title3">
-              Review
-            </div>
-            <div className="box-items">
-              {data
-                .filter((item) => item.status === "Review")
-                .map((item) => {
-                  return <ItemCard key={item.title} item={item} />;
-                })}
-            </div>
-          </div>
-
-          <div className="task-boxes">
-            <div className="box-title" id="box-title4">
-              Complete
-            </div>
-            <div className="box-items">
-              {data
-                .filter((item) => item.status === "Complete")
-                .map((item) => {
-                  return <ItemCard key={item.title} item={item} />;
-                })}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </>
