@@ -31,7 +31,7 @@ const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask 
   };
 
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     
     if (editTask) {
       
