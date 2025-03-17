@@ -2,15 +2,18 @@
 import TaskForm from "./Components/TaskForm";
 import SearchIcon from "@mui/icons-material/Search";
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ItemCard from "./Components/ItemCard";
 import Button from "@mui/material/Button";
 import DropArea from "./Components/DropArea";
 import { MenuItem, Select, InputLabel, FormControl, Chip } from "@mui/material";
 import UpdateForm from './Components/UpdateForm';
 
+
+const oldtasks = JSON.parse(localStorage.getItem("tasks"));
+
 function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState(oldtasks || []);
   const [activeCard,setActiveCard] = useState(null);
   // const [data,setData] = useState({
   //   backlog: [],
@@ -18,6 +21,10 @@ function App() {
   //   review: [],
   //   complete: []
   // });
+
+  useEffect(()=>{
+    localStorage.setItem("tasks",JSON.stringify(data));
+  },[data]);
 
   const assigneeOptions = ["vikash dwevedi", "sanskriti saluja", "abhishek sharma", "lavanya dhamija","jitendra sarswat","bhaskar nag"];
   const priorityOptions = [ "low", "medium","high"];
