@@ -11,7 +11,7 @@
   align-items: center;
   padding: 14px;
   background-color: cornflowerblue;
-  height: 50px;
+  height: 55px;
 }
 
 
@@ -21,6 +21,7 @@
   font-size: 15px;
   /* background-color: antiquewhite; */
   /* border-radius: 5px; */
+  
   
 }
 
@@ -35,14 +36,14 @@
 #input3{
   width: 300px
 }
-
+/* 
 .nav-box{
   width: 50vw;
   display: flex;
   justify-content: space-between;
   align-items: center;
 
-}
+} */
 
 .nav-button{
   width: 80px;
@@ -121,6 +122,27 @@
   background: rgba(255, 255, 255, 0.2); 
 } */
 
+.task-card:active{
+  opacity: 0.7;
+  border: 1px solid #111;
+}
+
+.drop_area{
+  width: 100%;
+  height: 360px;
+  columns: #dcdcdc;
+  border: 1px dashed #dcdcdc;
+  border-radius: 10px;
+  padding: 15px;
+  margin-bottom: 15px;
+  opacity: 1;
+  transition: all 0.2s ease-in-out;
+  
+}
+
+.hide_drop{
+  opacity: 0;
+}
 
 
 

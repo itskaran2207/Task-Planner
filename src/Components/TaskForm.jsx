@@ -115,7 +115,7 @@ const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask 
           <MenuItem value="vikash dwevedi">Vikash Dwevedi</MenuItem>
           <MenuItem value="sanskriti saluja">Sanskriti Saluja</MenuItem>
           <MenuItem value="abhishek sharma">Abhishek Sharma</MenuItem>
-          <MenuItem value="lawanya dhamija">Lawanya Dhamija</MenuItem>
+          <MenuItem value="lavanya dhamija">Lavanya Dhamija</MenuItem>
           <MenuItem value="jitendra sarswat">Jitendra Sarswat</MenuItem>
           <MenuItem value="bhaskar nag">Bhaskar Nag</MenuItem>
         </Select>

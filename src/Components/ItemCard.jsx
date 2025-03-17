@@ -1,78 +1,79 @@
-import { Box } from "@mui/material";
+import { Box, Typography, IconButton, Paper } from "@mui/material";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
-// import { useMemo } from "react";
+import "../App.css";
 
-function ItemCard({ item, setEditTask, setShowForm }) {
+function ItemCard({ item, setEditTask, setShowForm, index, setActiveCard }) {
   const handleEditClick = () => {
     setEditTask(item);
     setShowForm(true);
   };
 
   return (
-    <Box
+    <Paper
+      draggable
+      onDragStart={() => setActiveCard(index)}
+      onDragEnd={() => setActiveCard(null)}
+      elevation={4}
+      className="task-card"
       sx={{
         width: "100%",
-        // height: "130px",
-        margin: "4px",
-        borderRadius: "3px",
-        border: "0.5px solid black",
+        padding: "15px",
+        borderRadius: "10px",
         display: "flex",
         flexDirection: "column",
         gap: "10px",
-        padding: "4px",
         backgroundColor: "#F6F8D5",
-        // backgroundColor: "#FBA834",
-        boxShadow: "0px 4px 9px rgba(0, 0, 0, 0.2)",
+        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
+        cursor: "grab",
+        transition: "all 0.2s ease-in-out",
+        "&:hover": {
+          transform: "scale(1.02)",
+          boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
+        },
+        border: '0.5px solid black'
       }}
     >
-      <Box sx={{ fontSize: "1.5rem", padding: "5px", fontWeight: "bold", textWrap:'wrap'}}>
+      {/* Title */}
+      <Typography variant="h6" sx={{ fontWeight: "bold", textWrap: "wrap" }}>
         {item.title}
-      </Box>
-      
-      <Box sx={{ fontSize: "1.10rem", padding: "5px", color: "#333" }}>
+      </Typography>
+
+      {/* Description */}
+      <Typography variant="body2" sx={{ color: "#555" }}>
         {item.description}
-      </Box>
+      </Typography>
 
-      <Box sx={{ fontSize: "1.10rem", padding: "5px", color: "#333" }}>
-          <b>Assignee:</b> {item.assignee}
-      </Box>
-      
+      {/* Assignee */}
+      <Typography variant="body2" sx={{ fontWeight: "500", color: "#333" }}>
+        <b>Assignee:</b> {item.assignee}
+      </Typography>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
+      {/* Bottom Section */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        {/* Priority Badge */}
         <Box
           sx={{
-            fontSize: "1.25rem",
-            width: "35%",
+            fontSize: "1rem",
+            fontWeight: "bold",
             textAlign: "center",
-            backgroundColor: "burlywood",
-            border: "0.5px solid black",
-            borderRadius: "3px",
-            padding: "4px",
+            backgroundColor: item.priority === "high" ? "#ff6b6b" :
+                            item.priority === "medium" ? "#ffaf40" : "#4ecdc4",
+            color: "white",
+            borderRadius: "5px",
+            padding: "4px 10px",
+            minWidth: "80px",
           }}
         >
           {item.priority}
         </Box>
 
-        <EditIcon
-          sx={{
-            fontSize: "1.5rem",
-            cursor: "pointer",
-            transition: "0.2s",
-            "&:hover": { color: "blue" },
-          }}
-          onClick={handleEditClick}
-        />
+        {/* Edit Button */}
+        <IconButton onClick={handleEditClick} sx={{ color: "#007bff" }}>
+          <EditIcon />
+        </IconButton>
       </Box>
-
-      
-    </Box>
+    </Paper>
   );
 }
 
