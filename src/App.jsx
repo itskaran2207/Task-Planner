@@ -20,7 +20,7 @@ function App() {
   // });
 
   const assigneeOptions = ["vikash dwevedi", "sanskriti saluja", "abhishek sharma", "lavanya dhamija","jitendra sarswat","bhaskar nag"];
-  const priorityOptions = ["high", "medium", "low"];
+  const priorityOptions = [ "low", "medium","high"];
 
   const [showForm, setShowForm] = useState(false);
   const [editTask, setEditTask] = useState(null);
@@ -101,7 +101,7 @@ function App() {
     <>
       <div className="container">
         <nav className="navbar">
-          <div
+          <div className="nav-input-container"
             style={{
               display: "flex",
               alignItems: "center",
@@ -124,10 +124,10 @@ function App() {
               onChange={handleSearchInput}
             />
           </div>
-          <div className="nav-box" style={{display: "flex", justifyContent:"space-around", alignItems:"center", width: "70%" ,backgroundColor: ""}}>
+          <div className="nav-box" >
 
             {/* Assignee Multiselect */}
-            <FormControl fullWidth style={{ width: "600px", backgroundColor: "white",  }} size="small">
+            <FormControl  style={{ width: "600px", backgroundColor: "white",  }} size="small" className="input2">
               <InputLabel>Filter by Assignees</InputLabel>
               <Select
                 multiple
@@ -154,7 +154,7 @@ function App() {
             </FormControl>
 
             {/* Priority MultiSelect */}
-            <FormControl fullWidth style={{ width: "300px", backgroundColor: "white"}} size="small">
+            <FormControl  style={{ width: "300px", backgroundColor: "white"}} size="small" className="input3">
               <InputLabel>Filter by Priorities</InputLabel>
               <Select
                 multiple
@@ -257,7 +257,7 @@ function App() {
           )}
         </div>
 
-        <h1>{activeCard}</h1>
+        {/* <h1>{activeCard}</h1> */}
       </div>
     </>
   );
