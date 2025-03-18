@@ -9,38 +9,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { setShowForm,setEditTask,setFormData,resetFormData } from "../slices/formSlices";
 import { setData } from "../slices/dataSlices";
 
-// { showForm, setShowForm, data, setData, editTask, setEditTask }
 const TaskForm = () => {
   const formData = useSelector((state)=> state.Form.formData);
   const showForm = useSelector((state)=> state.Form.showForm);
   const data = useSelector((state)=> state.Data.data);
   const editTask = useSelector((state)=> state.Form.editTask);
   const dispatch = useDispatch();
-  // const [formData, setFormData] = useState({
-  //   title: "",
-  //   description: "",
-  //   priority: "",
-  //   assignee: "",
-  //   status: ""
-  // });
+  
 
   useEffect(() => {
     if (editTask) {
       dispatch(setFormData(editTask));
     } else {
-      // setFormData({
-      //   title: "",
-      //   description: "",
-      //   priority: "",
-      //   assignee: "",
-      //   status: ""
-      // });
+     
       dispatch(resetFormData());
     }
   }, [editTask,dispatch]);
 
   const handleChange = (e) => {
-    // setFormData({ ...formData, [e.target.name]: e.target.value });
     dispatch(setFormData({ ...formData, [e.target.name]: e.target.value }));
   };
 
@@ -51,29 +37,20 @@ const TaskForm = () => {
       const updatedTasks = data.map((task) => 
         task.title === editTask.title ? formData : task
       );
-      // setData(updatedTasks);
-      // setEditTask(null); 
+      
       dispatch(setData(updatedTasks));
       dispatch(setEditTask(null));
     } else {
-      // setData([...data, formData]);
       dispatch(setData([...data, formData]));
     }
 
     dispatch(setShowForm(false));
-    // setFormData({
-    //   title: "",
-    //   description: "",
-    //   priority: "",
-    //   assignee: "",
-    //   status: ""
-    // });
+    
     dispatch(resetFormData());
   };
   
   const handleCloseForm = () => {
-    // setShowForm(false);
-    // setEditTask(null);
+   
     dispatch(setShowForm(false));
     dispatch(setEditTask(null));
   };

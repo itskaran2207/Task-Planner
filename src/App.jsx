@@ -10,68 +10,51 @@ import { MenuItem, Select, InputLabel, FormControl, Chip } from "@mui/material";
 // import UpdateForm from './Components/UpdateForm';
 import { useDispatch, useSelector } from "react-redux";
 import { setShowForm,setEditTask,setActiveCard } from "./slices/formSlices";
-import { setSearchInput,setSearchAssignee,setSearchPriority } from "./slices/searchSlices";
+import { setSearchInput,setSearchAssignee,setSearchPriority,setSearchTask} from "./slices/searchSlices";
 import { setData } from "./slices/dataSlices";
+import {debounce} from 'lodash';
 
 
 
 
 
-// const oldtasks = JSON.parse(localStorage.getItem("tasks"));
+
 
 function App() {
-  // const [data, setData] = useState(oldtasks || []);
-  // const [activeCard,setActiveCard] = useState(null);
+  
 
 
   const dispatch = useDispatch();
   const data = useSelector((state)=> state.Data.data);
-  // useEffect(()=>{
-  //   localStorage.setItem("tasks",JSON.stringify(data));
-  // },[data]);
+  
 
   const assigneeOptions = ["vikash dwevedi", "sanskriti saluja", "abhishek sharma", "lavanya dhamija","jitendra sarswat","bhaskar nag","amrit aggarwal","asutosh swain"];
   const priorityOptions = [ "low", "medium","high"];
 
-  // const [showForm, setShowForm] = useState(false);
-  // const [editTask, setEditTask] = useState(null);
-  // const [search, setSearch] = useState({
-  //   searchByTask: "",
-   
-  //   searchByAssignee: [],
-  //   searchByPriority: [],
-  // });
-  // const {formData, showForm, editTask, activeCard} = useSelector((state)=> state.Form);
+  
   const showForm = useSelector((state)=> state.Form.showForm);
   const activeCard = useSelector((state)=> state.Form.activeCard);
 
-  const {searchByTask, searchByAssignee, searchByPriority} = useSelector((state)=> state.Search);
+  const {searchInput,searchByTask, searchByAssignee, searchByPriority} = useSelector((state)=> state.Search);
 
   const handleButtonClick = () => {
-    // setEditTask(null);
-    // setShowForm(true);
+    
     dispatch(setEditTask(null));
     dispatch(setShowForm(true));
   };
 
-  const handleSearchInput = (e) => {
-    // setSearch({
-    //   ...search,
-    //   [e.target.name]: e.target.value.toLowerCase(),
-    // });
+  const debouncedSearch = debounce((searchString)=>{
+    console.log(searchString);
+    dispatch(setSearchTask(searchString));
+  },1000);
 
+  const debouncedSearchInput = (e) => {
+    // dispatch(setSearchInput(e.target.value));
     dispatch(setSearchInput(e.target.value));
+    debouncedSearch(e.target.value);
   };
 
-  // const filteredData = (status) => {
-  //   return data.filter(
-  //     (item) =>
-  //       item.status === status &&
-  //       item.title.toLowerCase().includes(search.searchByTask) &&
-  //       item.assignee.toLowerCase().includes(search.searchByAssignee) &&
-  //       item.priority.toLowerCase().includes(search.searchByPriority)
-  //   );
-  // };
+  
 
   const filteredData = (status) => {
     return data.filter((item) => {
@@ -87,18 +70,10 @@ function App() {
   };
 
   const handleAssigneeChange = (e) => {
-    // setSearch({
-    //   ...search,
-    //   searchByAssignee: e.target.value,
-    // })
     dispatch(setSearchAssignee(e.target.value));
   };
 
   const handlePriorityChange = (e) => {
-    // setSearch({
-    //   ...search,
-    //   searchByPriority: e.target.value,
-    // })
     dispatch(setSearchPriority(e.target.value));
   };
 
@@ -141,8 +116,9 @@ function App() {
               className="input"
               id="input1"
               placeholder="Search here for a task..."
-              value={searchByTask}
-              onChange={handleSearchInput}
+              value={searchInput}
+              // onChange={handleSearchInput}
+              onChange={debouncedSearchInput}
             />
           </div>
           <div className="nav-box" >
@@ -201,25 +177,7 @@ function App() {
               </Select>
             </FormControl>
 
-            {/* <input
-              type="text"
-              name="searchByAssignee"
-              className="input"
-              id="input2"
-              placeholder="Filter by Assignee"
-              value={search.searchByAssignee}
-              onChange={handleSearchInput}
-            />
-
-            <input
-              type="text"
-              name="searchByPriority"
-              className="input"
-              id="input3"
-              placeholder="Filter by Priority"
-              value={search.searchByPriority} 
-              onChange={handleSearchInput} 
-            /> */}
+            
 
             <Button
               variant="contained"
@@ -238,16 +196,7 @@ function App() {
           </div>
         </nav>
 
-        {showForm && (
-          <TaskForm
-            // showForm={showForm}
-            // setShowForm={setShowForm}
-            // data={data}
-            // setData={setData}
-            // editTask={editTask}
-            // setEditTask={setEditTask}
-          />
-        )}
+        {showForm && (<TaskForm/>)}
 
         <div className="second-container">
           {["backlog", "in progress", "review", "complete"].map(
@@ -263,11 +212,8 @@ function App() {
                       {/* <DropArea onDrop={()=>{ onDrop(status,(index-1 >= 0 ? index-1 : 0))}}/> */}
                       <ItemCard
                         item={item}
-                        // setEditTask={setEditTask}
-                        // setShowForm={setShowForm}
                         index={index}
-                        // setActiveCard={setActiveCard}
-                    />
+                      />
                     <DropArea onDrop={()=>{ onDrop(status,index+1)}}/>
                     </div>
                     
@@ -279,7 +225,7 @@ function App() {
           )}
         </div>
 
-        {/* <h1>{activeCard}</h1> */}
+       
       </div>
     </>
   );
