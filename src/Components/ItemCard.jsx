@@ -2,18 +2,25 @@ import { Box, Typography, IconButton, Paper } from "@mui/material";
 import React from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import "../App.css";
+import { setShowForm, setEditTask, setActiveCard} from '../slices/formSlices';
+import { useDispatch,} from "react-redux";
 
-function ItemCard({ item, setEditTask, setShowForm, index, setActiveCard }) {
+
+// { item, setEditTask, setShowForm, index, setActiveCard }
+function ItemCard({item,index}) {
+  const dispatch = useDispatch();
+
   const handleEditClick = () => {
-    setEditTask(item);
-    setShowForm(true);
+    dispatch(setEditTask(item));
+    dispatch(setShowForm(true));
+    
   };
 
   return (
     <Paper
       draggable
-      onDragStart={() => setActiveCard(index)}
-      onDragEnd={() => setActiveCard(null)}
+      onDragStart={() => dispatch(setActiveCard(index))}
+      onDragEnd={() => dispatch(setActiveCard(null))}
       elevation={4}
       className="task-card"
       sx={{

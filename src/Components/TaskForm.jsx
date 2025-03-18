@@ -1,36 +1,47 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { 
   TextField, Select, MenuItem, Button, FormControl, 
   InputLabel, TextareaAutosize, Box, Modal 
 } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import '../App.css';
+import { useDispatch, useSelector } from "react-redux";
+import { setShowForm,setEditTask,setFormData,resetFormData } from "../slices/formSlices";
+import { setData } from "../slices/dataSlices";
 
-const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask }) => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    priority: "",
-    assignee: "",
-    status: ""
-  });
+// { showForm, setShowForm, data, setData, editTask, setEditTask }
+const TaskForm = () => {
+  const formData = useSelector((state)=> state.Form.formData);
+  const showForm = useSelector((state)=> state.Form.showForm);
+  const data = useSelector((state)=> state.Data.data);
+  const editTask = useSelector((state)=> state.Form.editTask);
+  const dispatch = useDispatch();
+  // const [formData, setFormData] = useState({
+  //   title: "",
+  //   description: "",
+  //   priority: "",
+  //   assignee: "",
+  //   status: ""
+  // });
 
   useEffect(() => {
     if (editTask) {
-      setFormData(editTask);
+      dispatch(setFormData(editTask));
     } else {
-      setFormData({
-        title: "",
-        description: "",
-        priority: "",
-        assignee: "",
-        status: ""
-      });
+      // setFormData({
+      //   title: "",
+      //   description: "",
+      //   priority: "",
+      //   assignee: "",
+      //   status: ""
+      // });
+      dispatch(resetFormData());
     }
-  }, [editTask]);
+  }, [editTask,dispatch]);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    // setFormData({ ...formData, [e.target.name]: e.target.value });
+    dispatch(setFormData({ ...formData, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = (e) => {
@@ -40,25 +51,31 @@ const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask 
       const updatedTasks = data.map((task) => 
         task.title === editTask.title ? formData : task
       );
-      setData(updatedTasks);
-      setEditTask(null); 
+      // setData(updatedTasks);
+      // setEditTask(null); 
+      dispatch(setData(updatedTasks));
+      dispatch(setEditTask(null));
     } else {
-      setData([...data, formData]);
+      // setData([...data, formData]);
+      dispatch(setData([...data, formData]));
     }
 
-    setShowForm(false);
-    setFormData({
-      title: "",
-      description: "",
-      priority: "",
-      assignee: "",
-      status: ""
-    });
+    dispatch(setShowForm(false));
+    // setFormData({
+    //   title: "",
+    //   description: "",
+    //   priority: "",
+    //   assignee: "",
+    //   status: ""
+    // });
+    dispatch(resetFormData());
   };
   
   const handleCloseForm = () => {
-    setShowForm(false);
-    setEditTask(null);
+    // setShowForm(false);
+    // setEditTask(null);
+    dispatch(setShowForm(false));
+    dispatch(setEditTask(null));
   };
 
   return (
@@ -96,7 +113,7 @@ const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask 
           placeholder="Description"
           name="description"
           value={formData.description}
-          onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+          onChange={(e) => dispatch(setFormData({ ...formData, description: e.target.value }))}
           style={{ width: "100%", padding: "8px", borderRadius: "4px", border: "1px solid black" }}
           required
         />
@@ -119,6 +136,8 @@ const TaskForm = ({ showForm, setShowForm, data, setData, editTask, setEditTask 
             <MenuItem value="lavanya dhamija">Lavanya Dhamija</MenuItem>
             <MenuItem value="jitendra sarswat">Jitendra Sarswat</MenuItem>
             <MenuItem value="bhaskar nag">Bhaskar Nag</MenuItem>
+            <MenuItem value="amrit aggarwal">Amrit Aggarwal</MenuItem>
+            <MenuItem value="asutosh swain">Asutosh swain</MenuItem>
           </Select>
         </FormControl>
 

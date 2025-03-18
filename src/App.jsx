@@ -2,53 +2,65 @@
 import TaskForm from "./Components/TaskForm";
 import SearchIcon from "@mui/icons-material/Search";
 import "./App.css";
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import ItemCard from "./Components/ItemCard";
 import Button from "@mui/material/Button";
 import DropArea from "./Components/DropArea";
 import { MenuItem, Select, InputLabel, FormControl, Chip } from "@mui/material";
-import UpdateForm from './Components/UpdateForm';
+// import UpdateForm from './Components/UpdateForm';
+import { useDispatch, useSelector } from "react-redux";
+import { setShowForm,setEditTask,setActiveCard } from "./slices/formSlices";
+import { setSearchInput,setSearchAssignee,setSearchPriority } from "./slices/searchSlices";
+import { setData } from "./slices/dataSlices";
 
 
-const oldtasks = JSON.parse(localStorage.getItem("tasks"));
+
+
+
+// const oldtasks = JSON.parse(localStorage.getItem("tasks"));
 
 function App() {
-  const [data, setData] = useState(oldtasks || []);
-  const [activeCard,setActiveCard] = useState(null);
-  // const [data,setData] = useState({
-  //   backlog: [],
-  //   inprogress : [],
-  //   review: [],
-  //   complete: []
-  // });
+  // const [data, setData] = useState(oldtasks || []);
+  // const [activeCard,setActiveCard] = useState(null);
 
-  useEffect(()=>{
-    localStorage.setItem("tasks",JSON.stringify(data));
-  },[data]);
 
-  const assigneeOptions = ["vikash dwevedi", "sanskriti saluja", "abhishek sharma", "lavanya dhamija","jitendra sarswat","bhaskar nag"];
+  const dispatch = useDispatch();
+  const data = useSelector((state)=> state.Data.data);
+  // useEffect(()=>{
+  //   localStorage.setItem("tasks",JSON.stringify(data));
+  // },[data]);
+
+  const assigneeOptions = ["vikash dwevedi", "sanskriti saluja", "abhishek sharma", "lavanya dhamija","jitendra sarswat","bhaskar nag","amrit aggarwal","asutosh swain"];
   const priorityOptions = [ "low", "medium","high"];
 
-  const [showForm, setShowForm] = useState(false);
-  const [editTask, setEditTask] = useState(null);
-  const [search, setSearch] = useState({
-    searchByTask: "",
-    // searchByAssignee: "",
-    // searchByPriority: "",
-    searchByAssignee: [],
-    searchByPriority: [],
-  });
+  // const [showForm, setShowForm] = useState(false);
+  // const [editTask, setEditTask] = useState(null);
+  // const [search, setSearch] = useState({
+  //   searchByTask: "",
+   
+  //   searchByAssignee: [],
+  //   searchByPriority: [],
+  // });
+  // const {formData, showForm, editTask, activeCard} = useSelector((state)=> state.Form);
+  const showForm = useSelector((state)=> state.Form.showForm);
+  const activeCard = useSelector((state)=> state.Form.activeCard);
+
+  const {searchByTask, searchByAssignee, searchByPriority} = useSelector((state)=> state.Search);
 
   const handleButtonClick = () => {
-    setEditTask(null);
-    setShowForm(true);
+    // setEditTask(null);
+    // setShowForm(true);
+    dispatch(setEditTask(null));
+    dispatch(setShowForm(true));
   };
 
   const handleSearchInput = (e) => {
-    setSearch({
-      ...search,
-      [e.target.name]: e.target.value.toLowerCase(),
-    });
+    // setSearch({
+    //   ...search,
+    //   [e.target.name]: e.target.value.toLowerCase(),
+    // });
+
+    dispatch(setSearchInput(e.target.value));
   };
 
   // const filteredData = (status) => {
@@ -65,27 +77,29 @@ function App() {
     return data.filter((item) => {
       return (
         item.status === status &&
-        item.title.toLowerCase().includes(search.searchByTask) &&
-        (search.searchByAssignee.length === 0 || 
-          search.searchByAssignee.includes(item.assignee)) &&
-        (search.searchByPriority.length === 0 || 
-          search.searchByPriority.includes(item.priority))
+        item.title.toLowerCase().includes(searchByTask) &&
+        (searchByAssignee.length === 0 || 
+          searchByAssignee.includes(item.assignee)) &&
+        (searchByPriority.length === 0 || 
+          searchByPriority.includes(item.priority))
       );
     });
   };
 
   const handleAssigneeChange = (e) => {
-    setSearch({
-      ...search,
-      searchByAssignee: e.target.value,
-    })
+    // setSearch({
+    //   ...search,
+    //   searchByAssignee: e.target.value,
+    // })
+    dispatch(setSearchAssignee(e.target.value));
   };
 
   const handlePriorityChange = (e) => {
-    setSearch({
-      ...search,
-      searchByPriority: e.target.value,
-    })
+    // setSearch({
+    //   ...search,
+    //   searchByPriority: e.target.value,
+    // })
+    dispatch(setSearchPriority(e.target.value));
   };
 
   const onDrop = (status,position) =>{
@@ -99,8 +113,8 @@ function App() {
       status: status
     })
 
-    setData(UpdatedTasks);
-    setActiveCard(null);
+    dispatch(setData(UpdatedTasks));
+    dispatch(setActiveCard(null));
   }
 
 
@@ -127,7 +141,7 @@ function App() {
               className="input"
               id="input1"
               placeholder="Search here for a task..."
-              value={search.searchByTask}
+              value={searchByTask}
               onChange={handleSearchInput}
             />
           </div>
@@ -138,7 +152,7 @@ function App() {
               <InputLabel>Filter by Assignees</InputLabel>
               <Select
                 multiple
-                value={search.searchByAssignee}
+                value={searchByAssignee}
                 onChange={handleAssigneeChange}
                 renderValue={(selected) => (
                   <div>
@@ -165,7 +179,7 @@ function App() {
               <InputLabel>Filter by Priorities</InputLabel>
               <Select
                 multiple
-                value={search.searchByPriority}
+                value={searchByPriority}
                 onChange={handlePriorityChange}
                 renderValue={(selected) => (
                   <div>
@@ -226,12 +240,12 @@ function App() {
 
         {showForm && (
           <TaskForm
-            showForm={showForm}
-            setShowForm={setShowForm}
-            data={data}
-            setData={setData}
-            editTask={editTask}
-            setEditTask={setEditTask}
+            // showForm={showForm}
+            // setShowForm={setShowForm}
+            // data={data}
+            // setData={setData}
+            // editTask={editTask}
+            // setEditTask={setEditTask}
           />
         )}
 
@@ -243,15 +257,16 @@ function App() {
                   {status.charAt(0).toUpperCase() + status.slice(1)}
                 </div>
                 <div className="box-items">
-                  <DropArea onDrop={()=>{ onDrop(status,0)}}/>
+                  <DropArea onDrop={()=>{ onDrop(status,0)}}/> 
                   {filteredData(status).map((item,index) => (
                     <div key={index}>
+                      {/* <DropArea onDrop={()=>{ onDrop(status,(index-1 >= 0 ? index-1 : 0))}}/> */}
                       <ItemCard
                         item={item}
-                        setEditTask={setEditTask}
-                        setShowForm={setShowForm}
+                        // setEditTask={setEditTask}
+                        // setShowForm={setShowForm}
                         index={index}
-                        setActiveCard={setActiveCard}
+                        // setActiveCard={setActiveCard}
                     />
                     <DropArea onDrop={()=>{ onDrop(status,index+1)}}/>
                     </div>
