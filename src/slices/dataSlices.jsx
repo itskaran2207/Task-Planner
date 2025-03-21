@@ -12,11 +12,6 @@ export const dataSlice = createSlice({
             state.data.push(action.payload);
             localStorage.setItem("tasks",JSON.stringify(state.data));
         },
-        updateData: (state,action)=>{
-            const {index,newdata} = action.payload;
-            state.data[index] = {...state.data[index],...newdata};
-            localStorage.setItem("tasks",JSON.stringify(state.data));
-        },
         setData: (state,action)=>{
             state.data = action.payload;
             localStorage.setItem("tasks",JSON.stringify(state.data));
@@ -24,6 +19,6 @@ export const dataSlice = createSlice({
     }
 })
 
-export const { addData, updateData,setData } = dataSlice.actions
+export const { addData,setData } = dataSlice.actions
 
 export default dataSlice.reducer

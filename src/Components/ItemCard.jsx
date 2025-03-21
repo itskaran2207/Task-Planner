@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import "../App.css";
 import { setShowForm, setEditTask, setActiveCard} from '../slices/formSlices';
 import { useDispatch,} from "react-redux";
+import { itemStyle } from "../Styles/itemStyle";
 
 
 // { item, setEditTask, setShowForm, index, setActiveCard }
@@ -11,6 +12,7 @@ function ItemCard({item,index}) {
   const dispatch = useDispatch();
 
   const handleEditClick = () => {
+    console.log("console");
     dispatch(setEditTask(item));
     dispatch(setShowForm(true));
     
@@ -23,60 +25,35 @@ function ItemCard({item,index}) {
       onDragEnd={() => dispatch(setActiveCard(null))}
       elevation={4}
       className="task-card"
-      sx={{
-        width: "100%",
-        padding: "15px",
-        borderRadius: "10px",
-        display: "flex",
-        flexDirection: "column",
-        gap: "10px",
-        backgroundColor: "#F6F8D5",
-        boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.1)",
-        cursor: "grab",
-        transition: "all 0.2s ease-in-out",
-        "&:hover": {
-          transform: "scale(1.02)",
-          boxShadow: "0px 6px 15px rgba(0, 0, 0, 0.2)",
-        },
-        border: '0.5px solid black'
-      }}
+      sx={itemStyle(item.priority).item_container}
     >
       {/* Title */}
-      <Typography variant="h6" sx={{ fontWeight: "bold", textWrap: "wrap" }}>
+      <Typography variant="h6" sx={itemStyle(item.priority).item_card_title}>
         {item.title}
       </Typography>
 
       {/* Description */}
-      <Typography variant="body2" sx={{ color: "#555" }}>
+      <Typography variant="body2" sx={itemStyle(item.priority).item_card_desc}>
         {item.description}
       </Typography>
 
       {/* Assignee */}
-      <Typography variant="body2" sx={{ fontWeight: "500", color: "#333" }}>
+      <Typography variant="body2" sx={itemStyle(item.priority).item_card_assignee}>
         <b>Assignee:</b> {item.assignee}
       </Typography>
 
       {/* Bottom Section */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <Box sx={itemStyle(item.priority).item_card_box}>
+        
         {/* Priority Badge */}
         <Box
-          sx={{
-            fontSize: "1rem",
-            fontWeight: "bold",
-            textAlign: "center",
-            backgroundColor: item.priority === "high" ? "#ff6b6b" :
-                            item.priority === "medium" ? "#ffaf40" : "#4ecdc4",
-            color: "white",
-            borderRadius: "5px",
-            padding: "4px 10px",
-            minWidth: "80px",
-          }}
+          sx={itemStyle(item.priority).item_card_priority}
         >
           {item.priority}
         </Box>
 
         {/* Edit Button */}
-        <IconButton onClick={handleEditClick} sx={{ color: "#007bff" }}>
+        <IconButton color="#007bff" onClick={handleEditClick} >
           <EditIcon />
         </IconButton>
       </Box>

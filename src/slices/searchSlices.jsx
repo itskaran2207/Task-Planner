@@ -7,6 +7,7 @@ const initialState = {
     searchByPriority: []
 }
 
+
 export const searchSlice = createSlice({
     name: 'search',
     initialState,
