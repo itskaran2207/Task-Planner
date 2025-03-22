@@ -1,94 +1,133 @@
 import { AppBar, Toolbar, Typography, InputBase, IconButton, FormControl, Select, MenuItem, Chip, Button, Box } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { useDispatch, useSelector } from "react-redux";
-import { setSearchInput,setSearchTask, setSearchAssignee, setSearchPriority } from "../slices/searchSlices";
 import { debounce } from "lodash";
+import { setSearchInput, setSearchTask, setSearchAssignee, setSearchPriority } from "../slices/searchSlices";
 import { assigneeOptions, priorityOptions } from "../data/options";
-import { setEditTask,setShowForm } from "../slices/formSlices";
+import { setEditTask, setShowForm } from "../slices/formSlices";
 
 const Navbar = () => {
   const dispatch = useDispatch();
-  const { searchInput, searchByAssignee, searchByPriority } = useSelector((state) => state.Search);
+  const { searchInput, searchByAssignee, searchByPriority } = useSelector(
+    (state) => state.Search
+  );
 
-  const debouncedSearch = debounce((searchString)=>{
-      console.log(searchString);
-      dispatch(setSearchTask(searchString));
-    },1000);
-    const debouncedSearchInput = (e) => {
-      dispatch(setSearchInput(e.target.value));
-      debouncedSearch(e.target.value);
-    };
+  const debouncedSearch = debounce((searchString) => {
+    dispatch(setSearchTask(searchString));
+  }, 500);
 
-    const handleButtonClick = () => {
-        
-        dispatch(setEditTask(null));
-        dispatch(setShowForm(true));
-    };
+  const handleSearchInput = (e) => {
+    dispatch(setSearchInput(e.target.value));
+    debouncedSearch(e.target.value);
+  };
 
-    const handleAssigneeChange = (e) => {
-      dispatch(setSearchAssignee(e.target.value));
-  
-    };
-  
-    const handlePriorityChange = (e) => {
-      dispatch(setSearchPriority(e.target.value));
-      
-    };
+  const handleButtonClick = () => {
+    dispatch(setEditTask(null));
+    dispatch(setShowForm(true));
+  };
 
   return (
-    <AppBar position="static"  sx={{ backgroundColor: "cornflowerblue", padding: "2px" }}>
-      <Toolbar sx={{ display: "flex", gap: 2 }}>
-        
-        
-        <Box   sx={{ display: "flex", alignItems: "center", backgroundColor: "white", padding: "3px", borderRadius: "3px", flexGrow: 1 }}>
-          <SearchIcon sx={{ color: "#757575", marginX: 1 }} />
+    <AppBar position="static" sx={{ backgroundColor: "cornflowerblue", p: 1 }}>
+      <Toolbar
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: 2,
+          flexDirection: { xs: "column", sm: "row" },
+          justifyContent: { xs: "center", sm: "space-between" },
+          alignItems: "center",
+          color:'#EAEAEA'
+        }}
+      >
+        {/* Search Box */}
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            backgroundColor: "white",
+            borderRadius: 1,
+            px: 2,
+            width: { xs: "100%", sm: "100%", md: "350px", lg: "400px" },
+          }}
+        >
+          <SearchIcon sx={{ color: "#757575", mr: 1 }} />
           <InputBase
-            placeholder="Search for a task..." 
+            placeholder="Search for a task..."
             value={searchInput}
-            onChange={debouncedSearchInput}
+            onChange={handleSearchInput}
             sx={{ flexGrow: 1 }}
           />
         </Box>
 
-       
-        <FormControl size="small" sx={{ minWidth: 400, backgroundColor: "white" }}>
+        {/* Assignee Filter */}
+        <FormControl
+          size="small"
+          sx={{
+            backgroundColor: "white",
+            width: { xs: "100%", sm: "280px", md: "300px", lg: "500px" },
+          }}
+        >
           <Select
             multiple
             displayEmpty
             value={searchByAssignee}
-            onChange={handleAssigneeChange}
+            onChange={(e) => dispatch(setSearchAssignee(e.target.value))}
             renderValue={(selected) =>
-              selected.length ? selected.map((val) => <Chip key={val} label={val} sx={{ margin: "2px" }} />) : "Filter by Assignee"
+              selected.length
+                ? selected.map((val) => <Chip key={val} label={val} sx={{ margin: "2px" }} />)
+                : "Filter by Assignee"
             }
           >
             {assigneeOptions.map((name) => (
-              <MenuItem key={name} value={name}>{name}</MenuItem>
+              <MenuItem key={name} value={name}>
+                {name}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
 
-      
-        <FormControl size="small" sx={{ minWidth: 250, backgroundColor: "white" }}>
+        {/* Priority Filter */}
+        <FormControl
+          size="small"
+          sx={{
+            backgroundColor: "white",
+            width: { xs: "100%", sm: "180px", md: "200px", lg: "250px" },
+          }}
+        >
           <Select
             multiple
             displayEmpty
             value={searchByPriority}
-            onChange={handlePriorityChange}
+            onChange={(e) => dispatch(setSearchPriority(e.target.value))}
             renderValue={(selected) =>
-              selected.length ? selected.map((val) => <Chip key={val} label={val} sx={{ margin: "2px" }} />) : "Filter by Priority"
+              selected.length
+                ? selected.map((val) => <Chip key={val} label={val} sx={{ margin: "2px" }} />)
+                : "Filter by Priority"
             }
           >
             {priorityOptions.map((priority) => (
-              <MenuItem key={priority} value={priority}>{priority}</MenuItem>
+              <MenuItem key={priority} value={priority}>
+                {priority}
+              </MenuItem>
             ))}
           </Select>
         </FormControl>
 
-    
-        <Button variant="contained" sx={{ backgroundColor: "yellow", color: "black", "&:hover": { backgroundColor: "gold" } }} onClick={handleButtonClick}>
-          Add Task
+        {/* Add Task Button */}
+        <Button
+          variant="contained"
+          onClick={handleButtonClick}
+          sx={{
+            backgroundColor: "yellow",
+            color: "black",
+            "&:hover": { backgroundColor: "gold" },
+            width: { xs: "100%", sm: "auto" },
+            px: { xs: 2, sm: 4 },
+            height: "37px",
+          }}
+        >
+          + Add Task
         </Button>
-
       </Toolbar>
     </AppBar>
   );

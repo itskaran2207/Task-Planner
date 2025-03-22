@@ -1,4 +1,4 @@
-import React, { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField } from "@mui/material";
 import { Select } from "@mui/material";
 import { MenuItem } from "@mui/material";
@@ -32,12 +32,12 @@ const form = {
   description: "",
   priority: "",
   assignee: "",
-  status: ""
-}
+  status: "",
+};
 
 const TaskForm = () => {
   // const formData = useSelector((state) => state.Form.formData);
-  const [formData,setFormData] = useState(form);
+  const [formData, setFormData] = useState(form);
   const showForm = useSelector((state) => state.Form.showForm);
   const data = useSelector((state) => state.Data.data);
   const editTask = useSelector((state) => state.Form.editTask);
@@ -47,13 +47,12 @@ const TaskForm = () => {
     if (editTask) {
       setFormData(editTask);
     } else {
-      
       setFormData(form);
     }
   }, [editTask, dispatch]);
 
   const handleChange = (e) => {
-   setFormData({ ...formData, [e.target.name]: e.target.value })
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = (e) => {
@@ -72,7 +71,6 @@ const TaskForm = () => {
 
     dispatch(setShowForm(false));
     setFormData(form);
-
   };
 
   const handleCloseForm = () => {
@@ -81,20 +79,13 @@ const TaskForm = () => {
   };
 
   const handleDescriptionChange = (e) => {
-    setFormData({ ...formData, description: e.target.value })
+    setFormData({ ...formData, description: e.target.value });
   };
 
   return (
     <Modal open={showForm} onClose={handleCloseForm}>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={formStyle.box}
-      >
-        <CloseIcon
-          onClick={handleCloseForm}
-          sx={formStyle.closeicon}
-        />
+      <Box component="form" onSubmit={handleSubmit} sx={formStyle.box}>
+        <CloseIcon onClick={handleCloseForm} sx={formStyle.closeicon} />
 
         <TextField
           label="Task Title"
